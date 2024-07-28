@@ -3,44 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sudoku Game - Version 2</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Sudoku</h1>
-    <div class="sudoku-container">
-        <table>
-            <tbody>
-                <script>
-                    const initialGrid = [
-                        [5, 3, 0, 0, 7, 0, 0, 0, 0],
-                        [6, 0, 0, 1, 9, 5, 0, 0, 0],
-                        [0, 9, 8, 0, 0, 0, 0, 6, 0],
-                        [8, 0, 0, 0, 6, 0, 0, 0, 3],
-                        [4, 0, 0, 8, 0, 3, 0, 0, 1],
-                        [7, 0, 0, 0, 2, 0, 0, 0, 6],
-                        [0, 6, 0, 0, 0, 0, 2, 8, 0],
-                        [0, 0, 0, 4, 1, 9, 0, 0, 5],
-                        [0, 0, 0, 0, 8, 0, 0, 7, 9]
-                    ];
-
-                    for (let row = 0; row < 9; row++) {
-                        document.write('<tr>');
-                        for (let col = 0; col < 9; col++) {
-                            const value = initialGrid[row][col];
-                            if (value !== 0) {
-                                document.write(`<td><input type="number" min="1" max="9" class="cell" value="${value}" disabled></td>`);
-                            } else {
-                                document.write('<td><input type="number" min="1" max="9" class="cell" oninput="validateInput(this)"></td>');
-                            }
-                        }
-                        document.write('</tr>');
-                    }
-                </script>
-            </tbody>
-        </table>
-    </div>
-    <button onclick="checkSudoku()">Check</button>
+    <table>
+        <tbody>
+            <!-- Create a 9x9 grid with input fields -->
+            <!-- Row 1 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+            <!-- Repeat the row 8 more times to complete the 9x9 grid -->
+            <!-- Row 2 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+            <!-- Row 3 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+            <!-- Row 4 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+            <!-- Row 5 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+            <!-- Row 6 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+            <!-- Row 7 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+            <!-- Row 8 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+            <!-- Row 9 -->
+            <tr>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+                <td><input type="text" maxlength="1" oninput="validateInput(this)"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="checkSudoku()">Check Sudoku</button>
+    <button onclick="clearGrid()">Clear Grid</button>
     <script src="script.js"></script>
 </body>
 </html>

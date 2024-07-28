@@ -22,29 +22,34 @@ function checkSudoku() {
         grid.push(rowValues);
     });
 
+    // Clear previous errors
+    document.querySelectorAll('input').forEach(cell => {
+        cell.classList.remove('error', 'row-error', 'col-error', 'subgrid-error');
+    });
+
     // Check rows and columns
     for (let i = 0; i < 9; i++) {
         let rowSet = new Set();
         let colSet = new Set();
         for (let j = 0; j < 9; j++) {
             if (grid[i][j] !== 0) {
-                let cell = document.querySelector(`tbody tr:nth-child(${i + 1}) td:nth-child(${j + 1}) input`);
+                let cell = rows[i].querySelectorAll('input')[j];
                 if (rowSet.has(grid[i][j])) {
                     valid = false;
-                    if (cell) cell.classList.add('error');
+                    if (cell) cell.classList.add('row-error');
                 } else {
                     rowSet.add(grid[i][j]);
-                    if (cell) cell.classList.remove('error');
+                    if (cell) cell.classList.remove('row-error');
                 }
             }
             if (grid[j][i] !== 0) {
-                let cell = document.querySelector(`tbody tr:nth-child(${j + 1}) td:nth-child(${i + 1}) input`);
+                let cell = rows[j].querySelectorAll('input')[i];
                 if (colSet.has(grid[j][i])) {
                     valid = false;
-                    if (cell) cell.classList.add('error');
+                    if (cell) cell.classList.add('col-error');
                 } else {
                     colSet.add(grid[j][i]);
-                    if (cell) cell.classList.remove('error');
+                    if (cell) cell.classList.remove('col-error');
                 }
             }
         }
@@ -57,14 +62,14 @@ function checkSudoku() {
             for (let i = 0; i < 3; i++) {
                 for (let j = 0; j < 3; j++) {
                     let value = grid[row + i][col + j];
-                    let cell = document.querySelector(`tbody tr:nth-child(${row + i + 1}) td:nth-child(${col + j + 1}) input`);
+                    let cell = rows[row + i].querySelectorAll('input')[col + j];
                     if (value !== 0) {
                         if (subgridSet.has(value)) {
                             valid = false;
-                            if (cell) cell.classList.add('error');
+                            if (cell) cell.classList.add('subgrid-error');
                         } else {
                             subgridSet.add(value);
-                            if (cell) cell.classList.remove('error');
+                            if (cell) cell.classList.remove('subgrid-error');
                         }
                     }
                 }
@@ -77,4 +82,11 @@ function checkSudoku() {
     } else {
         alert('Sudoku is invalid!');
     }
+}
+
+function clearGrid() {
+    document.querySelectorAll('input').forEach(cell => {
+        cell.value = '';
+        cell.classList.remove('error', 'row-error', 'col-error', 'subgrid-error');
+    });
 }
