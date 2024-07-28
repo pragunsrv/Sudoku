@@ -12,6 +12,7 @@
         <button onclick="checkSudoku()">Check Sudoku</button>
         <button onclick="clearGrid()">Clear Grid</button>
         <button onclick="giveHint()">Hint</button>
+        <button onclick="undoMove()">Undo</button>
         <button onclick="saveGame()">Save Game</button>
         <button onclick="loadGame()">Load Game</button>
         <select id="difficulty" onchange="changeDifficulty()">
@@ -20,6 +21,7 @@
             <option value="hard">Hard</option>
         </select>
         <div id="timer">Time: 00:00</div>
+        <div id="error-count">Errors: 0</div>
     </div>
     <table>
         <tbody id="sudoku-grid">

@@ -1,5 +1,7 @@
 let timerInterval;
 let difficulty = 'easy';
+let errorCount = 0;
+let moveHistory = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     generateGrid();
@@ -54,7 +56,7 @@ function generateGrid() {
             const input = document.createElement('input');
             input.type = 'text';
             input.maxLength = 1;
-            input.oninput = () => validateInput(input);
+            input.oninput = () => validateInput(input, i, j);
             input.onfocus = () => highlightCells(i, j);
             input.onblur = () => clearHighlights();
             if (initialGrid[i][j] !== 0) {
@@ -68,10 +70,13 @@ function generateGrid() {
     }
 }
 
-function validateInput(cell) {
+function validateInput(cell, row, col) {
     const value = cell.value;
-    if (value < 1 || value > 9) {
+    moveHistory.push({ row, col, value: cell.value });
+    if (value < 1 || value > 9 || isNaN(value)) {
         cell.classList.add('error');
+        errorCount++;
+        document.getElementById('error-count').textContent = `Errors: ${errorCount}`;
     } else {
         cell.classList.remove('error');
     }
@@ -91,10 +96,6 @@ function checkSudoku() {
         grid.push(rowValues);
     });
 
-    document.querySelectorAll('input').forEach(cell => {
-        cell.classList.remove('error', 'row-error', 'col-error', 'subgrid-error');
-    });
-
     for (let i = 0; i < 9; i++) {
         let rowSet = new Set();
         let colSet = new Set();
@@ -103,20 +104,20 @@ function checkSudoku() {
                 let cell = rows[i].querySelectorAll('input')[j];
                 if (rowSet.has(grid[i][j])) {
                     valid = false;
-                    if (cell) cell.classList.add('row-error');
+                    cell.classList.add('row-error');
                 } else {
                     rowSet.add(grid[i][j]);
-                    if (cell) cell.classList.remove('row-error');
+                    cell.classList.remove('row-error');
                 }
             }
             if (grid[j][i] !== 0) {
                 let cell = rows[j].querySelectorAll('input')[i];
                 if (colSet.has(grid[j][i])) {
                     valid = false;
-                    if (cell) cell.classList.add('col-error');
+                    cell.classList.add('col-error');
                 } else {
                     colSet.add(grid[j][i]);
-                    if (cell) cell.classList.remove('col-error');
+                    cell.classList.remove('col-error');
                 }
             }
         }
@@ -131,10 +132,10 @@ function checkSudoku() {
                         let cell = rows[i].querySelectorAll('input')[j];
                         if (subgridSet.has(grid[i][j])) {
                             valid = false;
-                            if (cell) cell.classList.add('subgrid-error');
+                            cell.classList.add('subgrid-error');
                         } else {
                             subgridSet.add(grid[i][j]);
-                            if (cell) cell.classList.remove('subgrid-error');
+                            cell.classList.remove('subgrid-error');
                         }
                     }
                 }
@@ -156,6 +157,8 @@ function clearGrid() {
             cell.classList.remove('error', 'row-error', 'col-error', 'subgrid-error');
         }
     });
+    errorCount = 0;
+    document.getElementById('error-count').textContent = 'Errors: 0';
 }
 
 function giveHint() {
@@ -228,5 +231,15 @@ function loadGame() {
                 cell.value = cellValue;
             });
         });
+    }
+}
+
+function undoMove() {
+    const lastMove = moveHistory.pop();
+    if (lastMove) {
+        const { row, col, value } = lastMove;
+        const rows = document.querySelectorAll('tbody tr');
+        const cell = rows[row].querySelectorAll('input')[col];
+        cell.value = value;
     }
 }
