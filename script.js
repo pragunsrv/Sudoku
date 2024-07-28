@@ -6,6 +6,7 @@ let moveHistory = [];
 document.addEventListener('DOMContentLoaded', () => {
     generateGrid();
     startTimer();
+    enableKeyboardControls();
 });
 
 const initialGrids = {
@@ -242,4 +243,106 @@ function undoMove() {
         const cell = rows[row].querySelectorAll('input')[col];
         cell.value = value;
     }
+}
+
+function solveSudoku() {
+    const grid = getGrid();
+    if (solve(grid)) {
+        displayGrid(grid);
+    } else {
+        alert('No solution exists!');
+    }
+}
+
+function getGrid() {
+    const rows = document.querySelectorAll('tbody tr');
+    let grid = [];
+    rows.forEach((row, rowIndex) => {
+        let rowValues = [];
+        row.querySelectorAll('input').forEach((cell, colIndex) => {
+            let value = cell.value ? parseInt(cell.value) : 0;
+            rowValues.push(value);
+        });
+        grid.push(rowValues);
+    });
+    return grid;
+}
+
+function displayGrid(grid) {
+    const rows = document.querySelectorAll('tbody tr');
+    grid.forEach((row, rowIndex) => {
+        row.forEach((value, colIndex) => {
+            const cell = rows[rowIndex].querySelectorAll('input')[colIndex];
+            cell.value = value !== 0 ? value : '';
+            cell.disabled = true;
+        });
+    });
+}
+
+function solve(grid) {
+    for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+            if (grid[row][col] === 0) {
+                for (let num = 1; num <= 9; num++) {
+                    if (isSafe(grid, row, col, num)) {
+                        grid[row][col] = num;
+                        if (solve(grid)) {
+                            return true;
+                        }
+                        grid[row][col] = 0;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function isSafe(grid, row, col, num) {
+    for (let x = 0; x < 9; x++) {
+        if (grid[row][x] === num || grid[x][col] === num) {
+            return false;
+        }
+    }
+    const startRow = row - row % 3, startCol = col - col % 3;
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (grid[i + startRow][j + startCol] === num) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function enableKeyboardControls() {
+    document.addEventListener('keydown', (event) => {
+        const activeElement = document.activeElement;
+        if (activeElement.tagName === 'INPUT' && activeElement.type === 'text') {
+            const cell = activeElement;
+            const key = event.key;
+            if (key >= '1' && key <= '9') {
+                cell.value = key;
+                validateInput(cell, parseInt(cell.parentNode.parentNode.rowIndex), parseInt(cell.parentNode.cellIndex));
+            } else if (key === 'ArrowUp') {
+                navigateCell(cell, -1, 0);
+            } else if (key === 'ArrowDown') {
+                navigateCell(cell, 1, 0);
+            } else if (key === 'ArrowLeft') {
+                navigateCell(cell, 0, -1);
+            } else if (key === 'ArrowRight') {
+                navigateCell(cell, 0, 1);
+            }
+        }
+    });
+}
+
+function navigateCell(cell, rowOffset, colOffset) {
+    const row = cell.parentNode.parentNode.rowIndex;
+    const col = cell.parentNode.cellIndex;
+    const rows = document.querySelectorAll('tbody tr');
+    const newRow = (row + rowOffset + 9) % 9;
+    const newCol = (col + colOffset + 9) % 9;
+    rows[newRow].querySelectorAll('input')[newCol].focus();
 }
