@@ -346,3 +346,61 @@ function navigateCell(cell, rowOffset, colOffset) {
     const newCol = (col + colOffset + 9) % 9;
     rows[newRow].querySelectorAll('input')[newCol].focus();
 }
+
+function generateNewPuzzle() {
+    const puzzle = generatePuzzle();
+    displayGrid(puzzle);
+}
+
+function generatePuzzle() {
+    const grid = Array.from({ length: 9 }, () => Array(9).fill(0));
+    fillDiagonal(grid);
+    solve(grid);
+    removeKDigits(grid);
+    return grid;
+}
+
+function fillDiagonal(grid) {
+    for (let i = 0; i < 9; i += 3) {
+        fillBox(grid, i, i);
+    }
+}
+
+function fillBox(grid, row, col) {
+    let num;
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            do {
+                num = randomNumber(1, 9);
+            } while (!unUsedInBox(grid, row, col, num));
+            grid[row + i][col + j] = num;
+        }
+    }
+}
+
+function unUsedInBox(grid, row, col, num) {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (grid[row + i][col + j] === num) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function removeKDigits(grid) {
+    const K = difficulty === 'easy' ? 20 : difficulty === 'medium' ? 40 : 60;
+    for (let i = 0; i < K; i++) {
+        let row, col;
+        do {
+            row = randomNumber(0, 8);
+            col = randomNumber(0, 8);
+        } while (grid[row][col] === 0);
+        grid[row][col] = 0;
+    }
+}
