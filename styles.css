@@ -12,6 +12,12 @@ h1 {
     margin-bottom: 20px;
 }
 
+.controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
 table {
     border-collapse: collapse;
 }
@@ -45,4 +51,8 @@ input {
 
 .subgrid-error {
     background-color: #d1ffd1;
+}
+
+#timer {
+    font-size: 1.2em;
 }

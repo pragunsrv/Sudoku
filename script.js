@@ -1,3 +1,43 @@
+let timerInterval;
+
+document.addEventListener('DOMContentLoaded', () => {
+    generateGrid();
+    startTimer();
+});
+
+const initialGrid = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+];
+
+function generateGrid() {
+    const tbody = document.getElementById('sudoku-grid');
+    for (let i = 0; i < 9; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < 9; j++) {
+            const cell = document.createElement('td');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 1;
+            input.oninput = () => validateInput(input);
+            if (initialGrid[i][j] !== 0) {
+                input.value = initialGrid[i][j];
+                input.disabled = true;
+            }
+            cell.appendChild(input);
+            row.appendChild(cell);
+        }
+        tbody.appendChild(row);
+    }
+}
+
 function validateInput(cell) {
     const value = cell.value;
     if (value < 1 || value > 9) {
@@ -12,7 +52,6 @@ function checkSudoku() {
     const rows = document.querySelectorAll('tbody tr');
     let grid = [];
 
-    // Create 2D array from input values
     rows.forEach((row, rowIndex) => {
         let rowValues = [];
         row.querySelectorAll('input').forEach((cell, colIndex) => {
@@ -22,12 +61,10 @@ function checkSudoku() {
         grid.push(rowValues);
     });
 
-    // Clear previous errors
     document.querySelectorAll('input').forEach(cell => {
         cell.classList.remove('error', 'row-error', 'col-error', 'subgrid-error');
     });
 
-    // Check rows and columns
     for (let i = 0; i < 9; i++) {
         let rowSet = new Set();
         let colSet = new Set();
@@ -55,7 +92,6 @@ function checkSudoku() {
         }
     }
 
-    // Check 3x3 subgrids
     for (let row = 0; row < 9; row += 3) {
         for (let col = 0; col < 9; col += 3) {
             let subgridSet = new Set();
@@ -86,7 +122,44 @@ function checkSudoku() {
 
 function clearGrid() {
     document.querySelectorAll('input').forEach(cell => {
-        cell.value = '';
-        cell.classList.remove('error', 'row-error', 'col-error', 'subgrid-error');
+        if (!cell.disabled) {
+            cell.value = '';
+            cell.classList.remove('error', 'row-error', 'col-error', 'subgrid-error');
+        }
     });
+}
+
+function startTimer() {
+    const timerElement = document.getElementById('timer');
+    let seconds = 0;
+    timerInterval = setInterval(() => {
+        seconds++;
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        timerElement.textContent = `Time: ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    }, 1000);
+}
+
+function giveHint() {
+    const emptyCells = [];
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach((row, rowIndex) => {
+        row.querySelectorAll('input').forEach((cell, colIndex) => {
+            if (cell.value === '' && !cell.disabled) {
+                emptyCells.push({ rowIndex, colIndex, cell });
+            }
+        });
+    });
+
+    if (emptyCells.length === 0) {
+        alert('No empty cells to fill!');
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * emptyCells.length);
+    const { rowIndex, colIndex, cell } = emptyCells[randomIndex];
+    const correctValue = initialGrid[rowIndex][colIndex];
+    cell.value = correctValue;
+    cell.classList.add('hint');
 }
