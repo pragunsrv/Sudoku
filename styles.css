@@ -16,6 +16,7 @@ h1 {
     margin-bottom: 20px;
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 table {
@@ -55,4 +56,12 @@ input {
 
 #timer {
     font-size: 1.2em;
+}
+
+.highlight {
+    background-color: #e0e0e0;
+}
+
+.hint {
+    background-color: #ccffcc;
 }

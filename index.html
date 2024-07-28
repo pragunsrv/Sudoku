@@ -12,6 +12,13 @@
         <button onclick="checkSudoku()">Check Sudoku</button>
         <button onclick="clearGrid()">Clear Grid</button>
         <button onclick="giveHint()">Hint</button>
+        <button onclick="saveGame()">Save Game</button>
+        <button onclick="loadGame()">Load Game</button>
+        <select id="difficulty" onchange="changeDifficulty()">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
         <div id="timer">Time: 00:00</div>
     </div>
     <table>
