@@ -26,6 +26,7 @@ td {
     border: 1px solid #000;
     width: 40px;
     height: 40px;
+    position: relative;
 }
 
 input.cell {
@@ -33,4 +34,14 @@ input.cell {
     height: 100%;
     text-align: center;
     border: none;
+    font-size: 20px;
+}
+
+input.cell:disabled {
+    background-color: #e0e0e0;
+    color: #000;
+}
+
+input.cell.error {
+    background-color: #ffdddd;
 }
